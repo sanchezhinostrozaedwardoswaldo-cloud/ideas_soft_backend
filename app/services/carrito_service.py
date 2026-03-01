@@ -100,15 +100,18 @@ def convertir_carrito_en_venta(db: Session, id_cliente: int):
         )
 
     try:
-        db.execute(
+        result = db.execute(
             text("SELECT convertir_carrito_a_venta(:id_carrito)"),
             {"id_carrito": carrito.id_carrito}
         )
 
+        id_venta = result.scalar()
+
         db.commit()
 
         return {
-            "message": "Carrito convertido en venta correctamente"
+            "message": "Venta generada correctamente",
+            "id_venta": id_venta
         }
 
     except Exception as e:

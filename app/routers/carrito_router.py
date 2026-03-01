@@ -20,28 +20,16 @@ def agregar(
     db: Session = Depends(get_db),
     current_user: Usuario = Depends(get_current_user)
 ):
-    cliente = db.query(Cliente).filter(
-        Cliente.id_usuario == current_user.id_usuario
-    ).first()
+    return agregar_al_carrito(db, current_user.id_cliente, data)
 
-    if not cliente:
-        raise HTTPException(status_code=404, detail="Cliente no encontrado")
-
-    return agregar_al_carrito(db, cliente.id_cliente, data)
 
 @router.get("/")
 def listar(
     db: Session = Depends(get_db),
     current_user: Usuario = Depends(get_current_user)
 ):
-    cliente = db.query(Cliente).filter(
-        Cliente.id_usuario == current_user.id_usuario
-    ).first()
+    return obtener_mi_carrito(db, current_user.id_cliente)
 
-    if not cliente:
-        raise HTTPException(status_code=404, detail="Cliente no encontrado")
-
-    return obtener_mi_carrito(db, cliente.id_cliente)
 
 @router.delete("/{id_detalle}")
 def eliminar(
@@ -49,26 +37,14 @@ def eliminar(
     db: Session = Depends(get_db),
     current_user: Usuario = Depends(get_current_user)
 ):
-    cliente = db.query(Cliente).filter(
-        Cliente.id_usuario == current_user.id_usuario
-    ).first()
-
-    if not cliente:
-        raise HTTPException(status_code=404, detail="Cliente no encontrado")
-
-    eliminar_item_carrito(db, cliente.id_cliente, id_detalle)
+    eliminar_item_carrito(db, current_user.id_cliente, id_detalle)
     return {"mensaje": "Item eliminado"}
+
 
 @router.post("/confirmar")
 def confirmar_compra(
     db: Session = Depends(get_db),
     current_user: Usuario = Depends(get_current_user)
 ):
-    cliente = db.query(Cliente).filter(
-        Cliente.id_usuario == current_user.id_usuario
-    ).first()
+    return convertir_carrito_en_venta(db, current_user.id_cliente)
 
-    if not cliente:
-        raise HTTPException(status_code=404, detail="Cliente no encontrado")
-
-    return convertir_carrito_en_venta(db, cliente.id_cliente)
