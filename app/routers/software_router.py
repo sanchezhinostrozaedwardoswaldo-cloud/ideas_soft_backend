@@ -10,6 +10,8 @@ from app.services.software_service import (
 )
 from app.core.security import require_role
 from app.models.usuario import Usuario
+from typing import Optional
+from fastapi import Query
 
 
 router = APIRouter(prefix="/software", tags=["Software"])
@@ -21,8 +23,20 @@ def crear(data: SoftwareCreate, db: Session = Depends(get_db),current_user: Usua
 
 
 @router.get("/", response_model=list[SoftwareResponse])
-def listar(db: Session = Depends(get_db)):
-    return get_all_software(db)
+def listar(
+    categoria: Optional[int] = None,
+    tipo: Optional[str] = Query(None, pattern="^(venta|suscripcion)$"),
+    buscar: Optional[str] = None,
+    orden: Optional[str] = None,
+    db: Session = Depends(get_db)
+):
+    return get_all_software(
+        db=db,
+        categoria=categoria,
+        tipo=tipo,
+        buscar=buscar,
+        orden=orden
+    )
 
 
 @router.get("/{id_software}", response_model=SoftwareResponse)
