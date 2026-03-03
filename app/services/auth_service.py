@@ -9,7 +9,7 @@ from app.schemas.usuario_schema import RegisterRequest
 
 def register_cliente_usuario(db: Session, data: RegisterRequest):
 
-    # 1️⃣ Verificar si el email ya existe en usuarios
+    # Verificar si el email ya existe en usuarios
     existing_user = db.query(Usuario).filter(
         Usuario.email == data.email
     ).first()
@@ -17,7 +17,7 @@ def register_cliente_usuario(db: Session, data: RegisterRequest):
     if existing_user:
         raise HTTPException(status_code=400, detail="Email ya registrado")
 
-    # 2️⃣ Crear cliente
+    # Crear cliente
     nuevo_cliente = Cliente(
         tipo_cliente=data.tipo_cliente,
         nombre_empresa=data.nombre_empresa,
@@ -33,7 +33,7 @@ def register_cliente_usuario(db: Session, data: RegisterRequest):
     db.commit()
     db.refresh(nuevo_cliente)
 
-    # 3️⃣ Crear usuario vinculado al cliente
+    # Crear usuario vinculado al cliente
     nuevo_usuario = Usuario(
         id_cliente=nuevo_cliente.id_cliente,
         email=data.email,
@@ -62,6 +62,18 @@ def authenticate_user(db: Session, email: str, password: str):
     if not user:
         return None
 
+    # Verificar estado del cliente (si aplica)
+    if user.id_cliente:
+        cliente = db.query(Cliente).filter(
+            Cliente.id_cliente == user.id_cliente
+        ).first()
+
+        if not cliente or cliente.estado_cliente != "activo":
+            raise HTTPException(
+                status_code=403,
+                detail="Cuenta bloqueada. Contacte al administrador."
+            )
+
     if not verify_password(password, user.password):
         return None
 
@@ -69,3 +81,4 @@ def authenticate_user(db: Session, email: str, password: str):
     db.commit()
 
     return user
+

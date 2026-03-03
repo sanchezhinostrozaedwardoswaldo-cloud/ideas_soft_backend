@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database.connection import engine
 from app.database.base import Base
-from app.routers import auth_router, software_router, carrito_router, ventas_router, cliente_router, categoria_router, resena_router, panel_router
+from app.routers import auth_router, software_router, carrito_router, cliente_router, categoria_router, resena_router, panel_router, admin_pago_router, admin_cliente_router, dashboard_router, soporte_router, admin_ticket_router, configuracion_router, usuarios_admin_router
 
 
 app = FastAPI(title="Ideas Soft API")
@@ -28,8 +28,6 @@ app.include_router(software_router)
 
 app.include_router(carrito_router)
 
-app.include_router(ventas_router)
-
 app.include_router(cliente_router)
 
 app.include_router(categoria_router)
@@ -37,3 +35,17 @@ app.include_router(categoria_router)
 app.include_router(resena_router)
 
 app.include_router(panel_router)
+
+app.include_router(admin_pago_router)
+
+app.include_router(admin_cliente_router)
+
+app.include_router(dashboard_router)
+
+app.include_router(soporte_router)
+
+app.include_router(admin_ticket_router)
+
+app.include_router(configuracion_router)
+
+app.include_router(usuarios_admin_router)

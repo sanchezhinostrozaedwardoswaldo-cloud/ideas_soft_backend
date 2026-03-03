@@ -1,8 +1,14 @@
 from .software_router import router as software_router
 from .carrito_router import router as carrito_router
 from .auth_router import router as auth_router
-from .ventas_router import router as ventas_router
 from .cliente_router import router as cliente_router
 from .categoria_router import router as categoria_router
 from .resena_router import router as resena_router
 from .panel_router import router as panel_router
+from .admin_pago_router import router as admin_pago_router
+from .admin_cliente_router import router as admin_cliente_router
+from .dashboard_router import router as dashboard_router
+from .soporte_router import router as soporte_router
+from .admin_ticket_router import router as admin_ticket_router
+from .configuracion_router import router as configuracion_router
+from .usuarios_admin_router import router as usuarios_admin_router

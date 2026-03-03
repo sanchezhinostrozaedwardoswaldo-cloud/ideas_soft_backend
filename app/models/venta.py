@@ -11,4 +11,6 @@ class Venta(Base):
     estado = Column(String)
     fecha = Column(DateTime)
 
+    detalles = relationship("DetalleVenta", back_populates="venta")
+
     cliente = relationship("Cliente")
