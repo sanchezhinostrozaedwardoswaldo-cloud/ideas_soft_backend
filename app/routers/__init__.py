@@ -12,3 +12,4 @@ from .soporte_router import router as soporte_router
 from .admin_ticket_router import router as admin_ticket_router
 from .configuracion_router import router as configuracion_router
 from .usuarios_admin_router import router as usuarios_admin_router
+from .video_router import router as video_router
